@@ -18,24 +18,9 @@ npm run build
 # Текущая версия: 1.0.0
 ```
 
-### Удаление тестовых файлов (опционально)
+### Проверка проекта
 
-Удалите файлы для тестирования слайдеров:
-
-- `slider-test.html`
-- `slider-alternative-test.html`
-- `direct-slider-test.html`
-- `minimal-slider-test.html`
-- `SLIDER_TEST.html`
-- `slider-diagnostic.html`
-- `SLIDER_FIX_README.md`
-
-### Очистка проекта
-
-```bash
-# Удалить файлы которые не нужны в финальном пакете
-rm slider*.html SLIDER*.html direct*.html minimal*.html slider-diagnostic.html
-```
+Убедитесь, что все тестовые файлы уже удалены из проекта.
 
 ## Шаг 2: Создать ZIP архив
 
@@ -51,9 +36,7 @@ Compress-Archive -Path keepalive-tabs-extension -DestinationPath keepalive-tabs-
 ```bash
 zip -r keepalive-tabs-extension-1.0.0.zip keepalive-tabs-extension \
   -x "keepalive-tabs-extension/.git/*" \
-  "keepalive-tabs-extension/node_modules/*" \
-  "keepalive-tabs-extension/slider*.html" \
-  "keepalive-tabs-extension/*.md"
+  "keepalive-tabs-extension/node_modules/*"
 ```
 
 ## Шаг 3: Создать скриншоты и описание

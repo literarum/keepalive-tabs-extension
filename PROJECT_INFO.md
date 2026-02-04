@@ -46,8 +46,8 @@
 keepalive-tabs-extension/
 ├── README.md                      # Основная документация
 ├── DEVELOPMENT.md                 # Руководство разработчика
-├── GITHUB_SETUP.md               # Инструкция по GitHub
-├── SLIDER_FIX_README.md          # Информация об исправлении слайдеров
+├── PROJECT_INFO.md               # Информация о проекте
+├── PUBLISHING.md                  # Инструкция по публикации
 ├── manifest.json                  # Манифест расширения (Manifest V3)
 ├── package.json                   # Dependencies и scripts
 ├── .gitignore                    # Git ignore rules
@@ -78,17 +78,11 @@ keepalive-tabs-extension/
 ├── src_styles/
 │   └── input.css                 # Исходные стили (Tailwind + @layer)
 │
-├── icons/
-│   ├── icon16.png
-│   ├── icon32.png
-│   ├── icon48.png
-│   └── icon128.png
-│
-└── [Тестовые файлы слайдеров - можно удалить]
-    ├── slider-test.html
-    ├── slider-alternative-test.html
-    ├── direct-slider-test.html
-    └── и другие...
+└── icons/
+    ├── icon16.png
+    ├── icon32.png
+    ├── icon48.png
+    └── icon128.png
 ```
 
 ## 🔑 Ключевые компоненты
@@ -198,7 +192,7 @@ MIT License - свободное использование и модифика�
 
 Для начала разработки см. [DEVELOPMENT.md](DEVELOPMENT.md)
 
-Для загрузки на GitHub см. [GITHUB_SETUP.md](GITHUB_SETUP.md)
+Для публикации в Chrome Web Store см. [PUBLISHING.md](PUBLISHING.md)
 
 ## 🔗 Полезные ссылки
 
