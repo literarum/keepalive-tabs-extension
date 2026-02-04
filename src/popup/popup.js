@@ -155,11 +155,11 @@ class PopupApp {
 
         const toggleMenu = (show) => {
             if (show) {
-                menu.classList.remove('opacity-0', 'invisible', 'pointer-events-none');
+                menu.classList.remove('opacity-0', 'invisible', 'pointer-events-none', 'hidden');
                 menu.style.transform = 'scale(1) translateY(0)';
                 btn.classList.add('ring-2', 'ring-indigo-500');
             } else {
-                menu.classList.add('opacity-0', 'invisible', 'pointer-events-none');
+                menu.classList.add('opacity-0', 'invisible', 'pointer-events-none', 'hidden');
                 menu.style.transform = 'scale(0.95) translateY(-4px)';
                 btn.classList.remove('ring-2', 'ring-indigo-500');
             }
@@ -187,8 +187,9 @@ class PopupApp {
         };
 
         // Клик по кнопке открывает/закрывает меню
-        btn.addEventListener('click', () => {
-            const isOpen = !menu.classList.contains('opacity-0');
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const isOpen = !menu.classList.contains('hidden') && !menu.classList.contains('opacity-0');
             toggleMenu(!isOpen);
         });
 
@@ -203,14 +204,21 @@ class PopupApp {
         // Закрытие меню при клике вне
         document.addEventListener('click', (e) => {
             if (!btn.contains(e.target) && !menu.contains(e.target)) {
-                toggleMenu(false);
+                const isOpen = !menu.classList.contains('hidden') && !menu.classList.contains('opacity-0');
+                if (isOpen) {
+                    toggleMenu(false);
+                }
             }
         });
 
         // Клавиша Escape закрывает меню
         document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && !menu.classList.contains('opacity-0')) {
-                toggleMenu(false);
+            if (e.key === 'Escape') {
+                const isOpen = !menu.classList.contains('hidden') && !menu.classList.contains('opacity-0');
+                if (isOpen) {
+                    toggleMenu(false);
+                    btn.focus();
+                }
             }
         });
 
@@ -291,6 +299,13 @@ class PopupApp {
                     indicator?.classList.add('opacity-0');
                 }
             });
+
+            // Убеждаемся, что меню закрыто при обновлении настроек
+            const menu = document.getElementById('autoLoginModeMenu');
+            if (menu) {
+                menu.classList.add('opacity-0', 'invisible', 'pointer-events-none', 'hidden');
+                menu.style.transform = 'scale(0.95) translateY(-4px)';
+            }
         }
     }
 
@@ -330,10 +345,7 @@ class PopupApp {
                     statusText.toLowerCase().includes('host-разреш');
 
                 return `
-          <li class="group relative overflow-hidden rounded-2xl bg-slate-950/40 ring-1 ring-slate-800/60 transition-all hover:shadow-lg hover:shadow-slate-900/50">
-            <!-- Left accent bar -->
-            <div class="absolute left-0 top-0 bottom-0 w-1 ${statusDotColor} opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
-
+          <li class="rounded-2xl bg-slate-950/40 ring-1 ring-slate-800/60 hover:bg-slate-950/60 transition-colors">
             <div class="flex items-start gap-3 px-4 py-3">
               <!-- Favicon / Icon -->
               <div class="mt-0.5 relative">
@@ -345,14 +357,14 @@ class PopupApp {
 
               <!-- Main content -->
               <div class="min-w-0 flex-1">
-                <div class="truncate text-sm font-semibold text-slate-50">${this._escape(e.titleHint || 'Закреплённая')}</div>
-                <div class="truncate text-xs text-slate-500 mt-0.5">${this._escape(e.url)}</div>
+                <div class="truncate text-sm font-medium text-slate-50">${this._escape(e.titleHint || 'Закреплённая')}</div>
+                <div class="truncate text-xs text-slate-400 mt-0.5">${this._escape(e.url)}</div>
 
                 <!-- Status badge and reason -->
                 <div class="mt-3 flex flex-wrap items-center gap-2">
-                  <span class="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold ${badgeBg} ${badgeText} border ${badgeBorder}">
+                  <span class="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold ${badgeBg} ${badgeText}">
                     <span class="h-1.5 w-1.5 rounded-full ${statusDotColor}"></span>
-                    <span class="${ok ? 'bg-emerald-500/30 rounded-lg px-2 py-1 text-emerald-300' : 'text-rose-400'}">${ok ? 'OK' : 'ОШИБКА'}</span>
+                    <span class="${ok ? 'text-emerald-300 status-ok-glow' : 'text-rose-400'}">${ok ? 'OK' : 'ОШИБКА'}</span>
                   </span>
                   <span class="text-xs text-slate-400">
                     ${this._escape(statusText)}
