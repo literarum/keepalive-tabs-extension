@@ -14,7 +14,6 @@ class PopupApp {
             masterEnabled: document.getElementById('masterEnabled'),
             keepPinnedAlive: document.getElementById('keepPinnedAlive'),
             autoRestoreDiscarded: document.getElementById('autoRestoreDiscarded'),
-            healthInterval: document.getElementById('healthInterval'),
             autoLoginMode: document.getElementById('autoLoginMode'),
 
             scanNowBtn: document.getElementById('scanNowBtn'),
@@ -80,14 +79,6 @@ class PopupApp {
         this.el.autoRestoreDiscarded?.addEventListener('change', () =>
             this._patchSettings({ autoRestoreDiscarded: this.el.autoRestoreDiscarded.checked }),
         );
-
-        this.el.healthInterval?.addEventListener('change', () => {
-            const sec = Math.max(60, Number(this.el.healthInterval.value || 60));
-            this._patchSettings({ healthIntervalSec: sec });
-            // UI в html даёт 30 сек — но alarms минимум 60, поэтому клампим.
-            if (sec !== Number(this.el.healthInterval.value))
-                this.el.healthInterval.value = String(sec);
-        });
 
         this.el.autoLoginMode?.addEventListener('change', () => {
             this._patchSettings({ autoLoginMode: this.el.autoLoginMode.value });
@@ -187,18 +178,13 @@ class PopupApp {
         }
 
         dot.className = 'block h-3 w-3 rounded-full bg-emerald-500';
-        const last = status?.lastCycleAt ? new Date(status.lastCycleAt).toLocaleTimeString() : '—';
-        label.textContent = `Активно · проверок: ${status?.pinnedTabsNow ?? 0} · ${last}`;
+        label.textContent = 'Активно';
     }
 
     _renderSettings(settings) {
         this.el.masterEnabled.checked = Boolean(settings.enabled);
         this.el.keepPinnedAlive.checked = Boolean(settings.keepPinnedAlive);
         this.el.autoRestoreDiscarded.checked = Boolean(settings.autoRestoreDiscarded);
-
-        // clamp UI: показываем минимум 60
-        const sec = Math.max(60, Number(settings.healthIntervalSec || 60));
-        if (this.el.healthInterval) this.el.healthInterval.value = String(sec);
 
         this.el.autoLoginMode.value = settings.autoLoginMode || 'off';
     }
