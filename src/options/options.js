@@ -37,6 +37,9 @@ class OptionsApp {
     }
 
     _wire() {
+        // Инициализация кастомного dropdown для autoLoginMode
+        this._initCustomAutoLoginModeSelect();
+
         this.el.saveBtn.addEventListener('click', () => this._save());
         this.el.resetBtn.addEventListener('click', async () => {
             if (!confirm('Сбросить настройки к умолчанию?')) return;
@@ -132,6 +135,86 @@ class OptionsApp {
         });
     }
 
+    _initCustomAutoLoginModeSelect() {
+        const btn = document.getElementById('opt_autoLoginModeBtn');
+        const menu = document.getElementById('opt_autoLoginModeMenu');
+        const label = document.getElementById('opt_autoLoginModeLabel');
+        const options = document.querySelectorAll('.opt-auto-login-option');
+        const hiddenSelect = this.el.autoLoginMode;
+
+        if (!btn || !menu || !label) return;
+
+        const labelMap = {
+            off: 'Выкл',
+            autofill: 'Попытка автозаполнения',
+            telegram: 'Клик Telegram (если кнопка не iframe)',
+        };
+
+        const toggleMenu = (show) => {
+            if (show) {
+                menu.classList.remove('opacity-0', 'invisible', 'pointer-events-none');
+                menu.style.transform = 'scale(1) translateY(0)';
+                btn.classList.add('ring-2', 'ring-indigo-500');
+            } else {
+                menu.classList.add('opacity-0', 'invisible', 'pointer-events-none');
+                menu.style.transform = 'scale(0.95) translateY(-4px)';
+                btn.classList.remove('ring-2', 'ring-indigo-500');
+            }
+        };
+
+        const updateSelection = (value) => {
+            hiddenSelect.value = value;
+            label.textContent = labelMap[value] || value;
+
+            // Обновляем визуальное состояние (точка рядом с выбранным)
+            options.forEach((opt) => {
+                const indicator = opt.querySelector('span:first-child');
+                if (opt.dataset.value === value) {
+                    indicator?.classList.remove('opacity-0');
+                } else {
+                    indicator?.classList.add('opacity-0');
+                }
+            });
+
+            // Закрываем меню
+            toggleMenu(false);
+
+            // Отправляем событие change для совместимости
+            hiddenSelect.dispatchEvent(new Event('change', { bubbles: true }));
+        };
+
+        // Клик по кнопке открывает/закрывает меню
+        btn.addEventListener('click', () => {
+            const isOpen = !menu.classList.contains('opacity-0');
+            toggleMenu(!isOpen);
+        });
+
+        // Обработка клика по опциям
+        options.forEach((opt) => {
+            opt.addEventListener('click', () => {
+                const value = opt.dataset.value;
+                updateSelection(value);
+            });
+        });
+
+        // Закрытие меню при клике вне
+        document.addEventListener('click', (e) => {
+            if (!btn.contains(e.target) && !menu.contains(e.target)) {
+                toggleMenu(false);
+            }
+        });
+
+        // Клавиша Escape закрывает меню
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && !menu.classList.contains('opacity-0')) {
+                toggleMenu(false);
+            }
+        });
+
+        // Убеждаемся что меню закрыто по умолчанию
+        toggleMenu(false);
+    }
+
     async _load() {
         this.state = await this.store.getState();
 
@@ -145,7 +228,30 @@ class OptionsApp {
         this.el.healthIntervalSec.value = String(healthValue);
         this.el.healthIntervalSecDisplay.textContent = String(healthValue);
 
-        this.el.autoLoginMode.value = s.autoLoginMode || 'off';
+        const autoLoginValue = s.autoLoginMode || 'off';
+        this.el.autoLoginMode.value = autoLoginValue;
+
+        // Обновляем кастомный dropdown
+        const label = document.getElementById('opt_autoLoginModeLabel');
+        if (label) {
+            const labelMap = {
+                off: 'Выкл',
+                autofill: 'Попытка автозаполнения',
+                telegram: 'Клик Telegram (если кнопка не iframe)',
+            };
+            label.textContent = labelMap[autoLoginValue] || autoLoginValue;
+
+            // Обновляем визуальные индикаторы выбранного элемента
+            const options = document.querySelectorAll('.opt-auto-login-option');
+            options.forEach((opt) => {
+                const indicator = opt.querySelector('span:first-child');
+                if (opt.dataset.value === autoLoginValue) {
+                    indicator?.classList.remove('opacity-0');
+                } else {
+                    indicator?.classList.add('opacity-0');
+                }
+            });
+        }
 
         this._renderRules();
     }

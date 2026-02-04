@@ -230,10 +230,73 @@
                     <div class="rounded-2xl bg-slate-950/40 px-4 py-3 ring-1 ring-slate-800/60">
                         <div class="text-sm font-medium">Глобальный автологин</div>
                         <div class="mt-2">
-                            <select
-                                id="opt_autoLoginMode"
-                                class="h-10 w-full rounded-xl bg-slate-900 px-3 text-sm text-slate-100 ring-1 ring-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                            >
+                            <!-- Custom select dropdown -->
+                            <div class="relative">
+                                <button
+                                    id="opt_autoLoginModeBtn"
+                                    type="button"
+                                    class="w-full h-12 rounded-xl bg-slate-900 px-3 text-sm text-slate-100 ring-1 ring-slate-700 hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all cursor-pointer font-medium flex items-center justify-between"
+                                >
+                                    <span id="opt_autoLoginModeLabel">Выкл</span>
+                                    <svg
+                                        class="w-4 h-4 text-slate-400 transition-transform duration-300 mr-1"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <path
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            stroke-width="2"
+                                            d="M19 14l-7 7m0 0l-7-7m7 7V3"
+                                        ></path>
+                                    </svg>
+                                </button>
+
+                                <!-- Dropdown menu -->
+                                <div
+                                    id="opt_autoLoginModeMenu"
+                                    class="absolute top-full left-0 right-0 mt-2 bg-slate-900 rounded-xl ring-1 ring-slate-700 shadow-xl overflow-hidden opacity-0 invisible transition-all duration-200 z-50 pointer-events-none"
+                                    style="
+                                        transform-origin: top;
+                                        transform: scale(0.95) translateY(-4px);
+                                    "
+                                >
+                                    <button
+                                        type="button"
+                                        data-value="off"
+                                        class="opt-auto-login-option w-full px-3 py-2 text-left text-sm text-slate-100 hover:bg-slate-800 transition-colors focus:outline-none focus:bg-slate-800 font-medium flex items-center gap-2"
+                                    >
+                                        <span
+                                            class="inline-block w-2 h-2 rounded-full bg-indigo-500 opacity-0 transition-opacity"
+                                        ></span>
+                                        Выкл
+                                    </button>
+                                    <button
+                                        type="button"
+                                        data-value="autofill"
+                                        class="opt-auto-login-option w-full px-3 py-2 text-left text-sm text-slate-100 hover:bg-slate-800 transition-colors focus:outline-none focus:bg-slate-800 font-medium flex items-center gap-2 border-t border-slate-800"
+                                    >
+                                        <span
+                                            class="inline-block w-2 h-2 rounded-full bg-indigo-500 opacity-0 transition-opacity"
+                                        ></span>
+                                        Попытка автозаполнения
+                                    </button>
+                                    <button
+                                        type="button"
+                                        data-value="telegram"
+                                        class="opt-auto-login-option w-full px-3 py-2 text-left text-sm text-slate-100 hover:bg-slate-800 transition-colors focus:outline-none focus:bg-slate-800 font-medium flex items-center gap-2 border-t border-slate-800"
+                                    >
+                                        <span
+                                            class="inline-block w-2 h-2 rounded-full bg-indigo-500 opacity-0 transition-opacity"
+                                        ></span>
+                                        Клик Telegram (если кнопка не iframe)
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Hidden select for backwards compatibility -->
+                            <select id="opt_autoLoginMode" class="hidden">
                                 <option value="off">Выкл</option>
                                 <option value="autofill">Попытка автозаполнения</option>
                                 <option value="telegram">
