@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="ru">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>KeepAlive Tabs — Настройки (финальный тест)</title>
+        <style>
+            :root,
+            :host {
+                --color-indigo-400: oklch(67.3% 0.182 276.935);
+                --color-indigo-500: oklch(58.5% 0.233 277.117);
+                --color-slate-100: oklch(96.8% 0.007 247.896);
+                --color-slate-400: oklch(70.4% 0.04 256.788);
+                --color-slate-800: oklch(27.9% 0.041 260.031);
+                --color-slate-900: oklch(20.8% 0.042 265.755);
+                --color-slate-950: oklch(12.9% 0.042 264.695);
+            }
+
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+
+            html,
+            body {
+                font-family:
+                    system-ui,
+                    -apple-system,
+                    sans-serif;
+                line-height: 1.5;
+            }
+
+            body {
+                background-color: #0f172a;
+                color: #e2e8f0;
+            }
+
+            /* КРИТИЧЕСКИ ВАЖНЫЕ СТИЛИ СЛАЙДЕРОВ */
+            input[type='range'] {
+                -webkit-appearance: none;
+                -moz-appearance: none;
+                appearance: none;
+                width: 100%;
+                height: 8px;
+                border-radius: 4px;
+                background: #1e293b;
+                outline: none;
+                cursor: pointer;
+                flex-shrink: 1;
+                min-width: 0;
+            }
+
+            input[type='range']::-webkit-slider-runnable-track {
+                height: 8px;
+                border-radius: 4px;
+                background: #1e293b;
+                border: none;
+            }
+
+            input[type='range']::-webkit-slider-thumb {
+                -webkit-appearance: none;
+                appearance: none;
+                width: 20px;
+                height: 20px;
+                border-radius: 50%;
+                background: #4f46e5;
+                cursor: pointer;
+                border: none;
+                box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.15);
+                margin-top: -6px;
+                transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
+            }
+
+            input[type='range']::-webkit-slider-thumb:hover {
+                background: #3730a3;
+                box-shadow: 0 0 0 8px rgba(79, 70, 229, 0.25);
+                transform: scale(1.1);
+            }
+
+            input[type='range']::-webkit-slider-thumb:active {
+                background: #312e81;
+                box-shadow: 0 0 0 12px rgba(79, 70, 229, 0.3);
+                transform: scale(1.15);
+            }
+
+            input[type='range']::-moz-range-track {
+                height: 8px;
+                background: #1e293b;
+                border-radius: 4px;
+                border: none;
+            }
+
+            input[type='range']::-moz-range-progress {
+                background: #4f46e5;
+                border-radius: 4px;
+                height: 8px;
+            }
+
+            input[type='range']::-moz-range-thumb {
+                width: 20px;
+                height: 20px;
+                border-radius: 50%;
+                background: #4f46e5;
+                cursor: pointer;
+                border: none;
+                box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.15);
+                transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
+            }
+
+            input[type='range']::-moz-range-thumb:hover {
+                background: #3730a3;
+                box-shadow: 0 0 0 8px rgba(79, 70, 229, 0.25);
+                transform: scale(1.1);
+            }
+
+            input[type='range']::-moz-range-thumb:active {
+                background: #312e81;
+                box-shadow: 0 0 0 12px rgba(79, 70, 229, 0.3);
+                transform: scale(1.15);
+            }
+
+            /* Утилиты */
+            .bg-slate-950 {
+                background-color: #0f172a;
+            }
+            .text-slate-100 {
+                color: #f1f5f9;
+            }
+            .mx-auto {
+                margin-left: auto;
+                margin-right: auto;
+            }
+            .max-w-5xl {
+                max-width: 64rem;
+            }
+            .px-4 {
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+            .py-6 {
+                padding-top: 1.5rem;
+                padding-bottom: 1.5rem;
+            }
+            .text-2xl {
+                font-size: 1.5rem;
+                line-height: 2rem;
+            }
+            .font-semibold {
+                font-weight: 600;
+            }
+            .mt-1 {
+                margin-top: 0.25rem;
+            }
+            .text-sm {
+                font-size: 0.875rem;
+            }
+            .text-slate-400 {
+                color: #cbd5e1;
+            }
+            .mt-6 {
+                margin-top: 1.5rem;
+            }
+            .rounded-3xl {
+                border-radius: 1.5rem;
+            }
+            .bg-slate-900 {
+                background-color: #1a1f2e;
+            }
+            .opacity-60 {
+                opacity: 0.6;
+            }
+            .p-5 {
+                padding: 1.25rem;
+            }
+            .ring-1 {
+                border: 1px solid;
+            }
+            .ring-slate-800 {
+                border-color: #1e293b;
+            }
+            .text-lg {
+                font-size: 1.125rem;
+            }
+            .mt-4 {
+                margin-top: 1rem;
+            }
+            .rounded-2xl {
+                border-radius: 1rem;
+            }
+            .bg-slate-950 {
+                background-color: #0f172a;
+            }
+            .opacity-40 {
+                opacity: 0.4;
+            }
+            .gap-4 {
+                gap: 1rem;
+            }
+            .ring-slate-800 {
+                border-color: #1e293b;
+            }
+            .opacity-60 {
+                opacity: 0.6;
+            }
+            .mt-2 {
+                margin-top: 0.5rem;
+            }
+            .flex {
+                display: flex;
+            }
+            .items-center {
+                align-items: center;
+            }
+            .text-indigo-400 {
+                color: #a5b4fc;
+            }
+            .w-20 {
+                width: 5rem;
+            }
+            .text-right {
+                text-align: right;
+            }
+            .font-medium {
+                font-weight: 500;
+            }
+            .text-xs {
+                font-size: 0.75rem;
+            }
+            .w-24 {
+                width: 6rem;
+            }
+        </style>
+    </head>
+
+    <body class="bg-slate-950 text-slate-100">
+        <main class="mx-auto max-w-5xl px-4 py-6">
+            <header>
+                <div>
+                    <h1 class="text-2xl font-semibold">KeepAlive Tabs</h1>
+                    <p class="mt-1 text-sm text-slate-400">
+                        Полные настройки: правила сайтов, разрешения, интервалы, диагностика.
+                    </p>
+                </div>
+            </header>
+
+            <!-- Общие настройки -->
+            <section class="mt-6 rounded-3xl bg-slate-900/60 p-5 ring-1 ring-slate-800">
+                <h2 class="text-lg font-semibold">Общие настройки</h2>
+
+                <div class="mt-4">
+                    <div class="rounded-2xl bg-slate-950/40 px-4 py-3 ring-1 ring-slate-800/60">
+                        <div class="text-sm font-medium">Интервал проверок</div>
+                        <div class="mt-2 flex items-center gap-4">
+                            <input
+                                id="opt_healthIntervalSec"
+                                type="range"
+                                min="60"
+                                max="600"
+                                step="60"
+                                value="120"
+                            />
+                            <span
+                                id="opt_healthIntervalSec_display"
+                                class="text-sm font-medium text-indigo-400 w-20 text-right"
+                                >120</span
+                            >
+                            <span class="text-xs text-slate-400 w-24">сек</span>
+                        </div>
+                        <p class="text-xs text-slate-500 mt-2">
+                            ✓ Попробуйте перемещать ползунок влево-вправо. Число справа должно
+                            меняться.
+                        </p>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <script>
+            const slider = document.getElementById('opt_healthIntervalSec');
+            const display = document.getElementById('opt_healthIntervalSec_display');
+
+            console.log('=== FINAL SLIDER TEST ===');
+            console.log('Slider found:', !!slider);
+            console.log('Initial value:', slider.value);
+
+            slider.addEventListener('input', (e) => {
+                const value = e.target.value;
+                display.textContent = value;
+                console.log('✓ Slider moved to:', value);
+            });
+
+            slider.addEventListener('mousedown', () => {
+                console.log('✓ Slider grabbed');
+            });
+
+            slider.addEventListener('mouseup', () => {
+                console.log('✓ Slider released');
+            });
+
+            console.log('Event listeners attached successfully');
+        </script>
+    </body>
+</html>

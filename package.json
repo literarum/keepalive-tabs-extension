@@ -1,0 +1,22 @@
+{
+    "name": "keepalive-tabs-extension",
+    "version": "1.0.0",
+    "description": "Chrome extension to keep pinned tabs alive with health-checks, auto-restore, and auto-login",
+    "scripts": {
+        "build": "tailwindcss -i ./src_styles/input.css -o ./src/output.css",
+        "watch": "tailwindcss -i ./src_styles/input.css -o ./src/output.css --watch",
+        "dev": "npm run watch"
+    },
+    "keywords": [
+        "chrome-extension",
+        "tabs",
+        "keepalive",
+        "health-check",
+        "auto-login"
+    ],
+    "author": "",
+    "license": "MIT",
+    "dependencies": {
+        "@tailwindcss/cli": "^4.1.18"
+    }
+}

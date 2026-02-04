@@ -1,0 +1,51 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>Slider Test</title>
+        <link rel="stylesheet" href="src/output.css" />
+        <style>
+            body {
+                padding: 20px;
+                background: #0f172a;
+            }
+            .test-container {
+                max-width: 400px;
+                margin: 0 auto;
+                padding: 20px;
+                border-radius: 1rem;
+                background: #1e293b;
+                border: 1px solid #334155;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="test-container">
+            <h2 class="text-white mb-4">Slider Test</h2>
+            <label class="block text-white mb-2">
+                <span>Test Slider (60-600, step 60)</span>
+                <input
+                    type="range"
+                    min="60"
+                    max="600"
+                    step="60"
+                    value="60"
+                    class="slider w-full mt-2"
+                    id="testSlider"
+                />
+            </label>
+            <p class="text-indigo-400 mt-4">Value: <span id="value">60</span></p>
+        </div>
+
+        <script>
+            const slider = document.getElementById('testSlider');
+            const valueSpan = document.getElementById('value');
+
+            slider.addEventListener('input', (e) => {
+                valueSpan.textContent = e.target.value;
+            });
+
+            console.log('Slider test loaded');
+        </script>
+    </body>
+</html>

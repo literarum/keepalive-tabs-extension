@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="ru">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>KeepAlive Tabs — Настройки</title>
+        <link rel="stylesheet" href="../output.css" />
+        <style>
+            /* Встроенные стили для слайдеров — приоритет выше, чем внешний CSS */
+            input[type='range'] {
+                -webkit-appearance: none;
+                -moz-appearance: none;
+                appearance: none;
+                width: 100%;
+                height: 8px;
+                border-radius: 4px;
+                background: #1e293b;
+                outline: none;
+                cursor: pointer;
+                flex-shrink: 1;
+                min-width: 0;
+            }
+
+            input[type='range']::-webkit-slider-runnable-track {
+                height: 8px;
+                border-radius: 4px;
+                background: #1e293b;
+                border: none;
+            }
+
+            input[type='range']::-webkit-slider-thumb {
+                -webkit-appearance: none;
+                appearance: none;
+                width: 20px;
+                height: 20px;
+                border-radius: 50%;
+                background: #4f46e5;
+                cursor: pointer;
+                border: none;
+                box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.15);
+                margin-top: -6px;
+                transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
+            }
+
+            input[type='range']::-webkit-slider-thumb:hover {
+                background: #3730a3;
+                box-shadow: 0 0 0 8px rgba(79, 70, 229, 0.25);
+                transform: scale(1.1);
+            }
+
+            input[type='range']::-webkit-slider-thumb:active {
+                background: #312e81;
+                box-shadow: 0 0 0 12px rgba(79, 70, 229, 0.3);
+                transform: scale(1.15);
+            }
+
+            input[type='range']::-moz-range-track {
+                height: 8px;
+                background: #1e293b;
+                border-radius: 4px;
+                border: none;
+            }
+
+            input[type='range']::-moz-range-progress {
+                background: #4f46e5;
+                border-radius: 4px;
+                height: 8px;
+            }
+
+            input[type='range']::-moz-range-thumb {
+                width: 20px;
+                height: 20px;
+                border-radius: 50%;
+                background: #4f46e5;
+                cursor: pointer;
+                border: none;
+                box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.15);
+                transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
+            }
+
+            input[type='range']::-moz-range-thumb:hover {
+                background: #3730a3;
+                box-shadow: 0 0 0 8px rgba(79, 70, 229, 0.25);
+                transform: scale(1.1);
+            }
+
+            input[type='range']::-moz-range-thumb:active {
+                background: #312e81;
+                box-shadow: 0 0 0 12px rgba(79, 70, 229, 0.3);
+                transform: scale(1.15);
+            }
+        </style>
+    </head>
+
+    <body class="bg-slate-950 text-slate-100">
+        <main class="mx-auto max-w-5xl px-4 py-6">
+            <header class="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+                <div>
+                    <h1 class="text-2xl font-semibold">KeepAlive Tabs</h1>
+                    <p class="mt-1 text-sm text-slate-400">
+                        Полные настройки: правила сайтов, разрешения, интервалы, диагностика.
+                    </p>
+                </div>
+
+                <div class="flex gap-2">
+                    <button
+                        id="saveBtn"
+                        class="rounded-2xl bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-400"
+                    >
+                        Сохранить
+                    </button>
+                    <button
+                        id="resetBtn"
+                        class="rounded-2xl bg-slate-900 px-4 py-2 text-sm font-semibold text-slate-200 ring-1 ring-slate-800 hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    >
+                        Сброс
+                    </button>
+                </div>
+            </header>
+
+            <!-- Общие настройки -->
+            <section class="mt-6 rounded-3xl bg-slate-900/60 p-5 ring-1 ring-slate-800">
+                <h2 class="text-lg font-semibold">Общие настройки</h2>
+
+                <div class="mt-4 grid gap-4 sm:grid-cols-2">
+                    <label
+                        class="flex items-center justify-between gap-3 rounded-2xl bg-slate-950/40 px-4 py-3 ring-1 ring-slate-800/60"
+                    >
+                        <div>
+                            <div class="text-sm font-medium">Включено</div>
+                            <div class="text-xs text-slate-400">Главный переключатель</div>
+                        </div>
+                        <input id="opt_enabled" type="checkbox" class="h-5 w-5 accent-indigo-500" />
+                    </label>
+
+                    <label
+                        class="flex items-center justify-between gap-3 rounded-2xl bg-slate-950/40 px-4 py-3 ring-1 ring-slate-800/60"
+                    >
+                        <div>
+                            <div class="text-sm font-medium">Следить за закреплёнными</div>
+                            <div class="text-xs text-slate-400">
+                                Health-check + авто-восстановление
+                            </div>
+                        </div>
+                        <input
+                            id="opt_keepPinnedAlive"
+                            type="checkbox"
+                            class="h-5 w-5 accent-indigo-500"
+                        />
+                    </label>
+
+                    <label
+                        class="flex items-center justify-between gap-3 rounded-2xl bg-slate-950/40 px-4 py-3 ring-1 ring-slate-800/60"
+                    >
+                        <div>
+                            <div class="text-sm font-medium">Восстанавливать discarded</div>
+                            <div class="text-xs text-slate-400">
+                                Если вкладку выгрузило — перезагрузить
+                            </div>
+                        </div>
+                        <input
+                            id="opt_autoRestoreDiscarded"
+                            type="checkbox"
+                            class="h-5 w-5 accent-indigo-500"
+                        />
+                    </label>
+
+                    <label
+                        class="flex items-center justify-between gap-3 rounded-2xl bg-slate-950/40 px-4 py-3 ring-1 ring-slate-800/60"
+                    >
+                        <div>
+                            <div class="text-sm font-medium">Просить Chrome не выгружать</div>
+                            <div class="text-xs text-slate-400">
+                                Ставит autoDiscardable=false (не 100%)
+                            </div>
+                        </div>
+                        <input
+                            id="opt_preventAutoDiscardable"
+                            type="checkbox"
+                            class="h-5 w-5 accent-indigo-500"
+                        />
+                    </label>
+
+                    <div class="rounded-2xl bg-slate-950/40 px-4 py-3 ring-1 ring-slate-800/60">
+                        <div class="text-sm font-medium">Интервал проверок</div>
+                        <div class="mt-2 flex items-center gap-4">
+                            <input
+                                id="opt_healthIntervalSec"
+                                type="range"
+                                min="60"
+                                max="600"
+                                step="60"
+                            />
+                            <span
+                                id="opt_healthIntervalSec_display"
+                                class="text-sm font-medium text-indigo-400 w-20 text-right"
+                                >60</span
+                            >
+                            <span class="text-xs text-slate-400 w-24">сек</span>
+                        </div>
+                    </div>
+
+                    <div class="rounded-2xl bg-slate-950/40 px-4 py-3 ring-1 ring-slate-800/60">
+                        <div class="text-sm font-medium">Глобальный автологин</div>
+                        <div class="mt-2">
+                            <select
+                                id="opt_autoLoginMode"
+                                class="h-10 w-full rounded-xl bg-slate-900 px-3 text-sm text-slate-100 ring-1 ring-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                            >
+                                <option value="off">Выкл</option>
+                                <option value="autofill">Попытка автозаполнения</option>
+                                <option value="telegram">
+                                    Клик Telegram (если кнопка не iframe)
+                                </option>
+                            </select>
+                            <p class="mt-2 text-xs text-slate-400">
+                                На конкретных сайтах можно переопределить в “Правилах сайтов”.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Правила сайтов -->
+            <section class="mt-6 rounded-3xl bg-slate-900/60 p-5 ring-1 ring-slate-800">
+                <div class="flex items-center justify-between gap-3">
+                    <h2 class="text-lg font-semibold">Правила сайтов</h2>
+                    <button
+                        id="addRuleBtn"
+                        class="rounded-2xl bg-slate-900 px-4 py-2 text-sm font-semibold text-slate-200 ring-1 ring-slate-800 hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    >
+                        + Добавить правило
+                    </button>
+                </div>
+
+                <p class="mt-2 text-sm text-slate-400">
+                    Правило = шаблон URL + селектор “готовности” + режим логина (опционально) +
+                    селекторы клика.
+                </p>
+
+                <div id="rulesList" class="mt-4 space-y-3"></div>
+            </section>
+
+            <!-- Диагностика -->
+            <section class="mt-6 rounded-3xl bg-slate-900/60 p-5 ring-1 ring-slate-800">
+                <h2 class="text-lg font-semibold">Разрешения и диагностика</h2>
+
+                <div
+                    class="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between"
+                >
+                    <div class="text-sm text-slate-300">
+                        Host-разрешения нужны, чтобы выполнять health-check/логин на сайтах в фоне.
+                    </div>
+                    <button
+                        id="refreshPermsBtn"
+                        class="rounded-2xl bg-slate-900 px-4 py-2 text-sm font-semibold text-slate-200 ring-1 ring-slate-800 hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    >
+                        Обновить список разрешений
+                    </button>
+                </div>
+
+                <pre
+                    id="permsBox"
+                    class="mt-4 overflow-auto rounded-2xl bg-slate-950/60 p-4 text-xs text-slate-200 ring-1 ring-slate-800"
+                ></pre>
+            </section>
+        </main>
+
+        <script type="module" src="./options.js"></script>
+    </body>
+</html>
